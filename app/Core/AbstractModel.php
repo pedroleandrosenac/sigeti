@@ -8,6 +8,7 @@ use PDO;
 
 abstract class AbstractModel
 {
+    /** @var PDO $connection */
     protected PDO $connection;
 
     protected string $table = "";
