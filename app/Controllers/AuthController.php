@@ -57,18 +57,6 @@ class AuthController extends Controller
             return;
         }
 
-        if ($user->getStatus() === User::INACTIVE) {
-            Message::error("Usuário está INATIVO. Contate o administrador.");
-            redirect("/entrar");
-            return;
-        }
-
-        if($user->getStatus() === User::REGISTERED){
-            Message::error("Usuário apenas REGISTRADO. Contate o administrador.");
-            redirect("/entrar");
-            return;
-        }
-
         $session = new Session();
 
         $session->set("auth", [
