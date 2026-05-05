@@ -63,11 +63,7 @@ class AuthController extends Controller
             return;
         }
 
-        if($user->getStatus() === User::REGISTERED){
-            Message::error("Usuário apenas REGISTRADO. Contate o administrador.");
-            redirect("/entrar");
-            return;
-        }
+
 
         $session = new Session();
 
