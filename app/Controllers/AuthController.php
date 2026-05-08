@@ -6,6 +6,7 @@ use App\Core\Auth;
 use App\Core\Controller;
 use App\Core\Email;
 use App\Core\Message;
+use App\Core\Permission;
 use App\Core\Session;
 use App\Core\SessionTimeoutMiddleware;
 use App\Models\User;
@@ -21,17 +22,8 @@ class AuthController extends Controller
     public function index(): void
     {
         if (Auth::check()) {
-
-            if (Auth::role() === User::TECHNICIAN) {
-                redirect("/tecnico/dashboard");
-                return;
-            }
-
-            if (Auth::role() === User::TEACHER) {
-                redirect("/professor/dashboard");
-                return;
-            }
-
+            redirect($this->resolveHomeByPermission());
+            return;
         }
 
         echo $this->view->render("auth/auth-login", [
@@ -75,7 +67,8 @@ class AuthController extends Controller
             "id" => $user->getId(),
             "name" => $user->getName(),
             "email" => $user->getEmail(),
-            "role" => $user->getRole()
+            "role" => $user->getRole(),
+            "role_id" => $user->getRoleId()
         ]);
 
         $session->regenerate();
@@ -85,21 +78,10 @@ class AuthController extends Controller
         $user->setLastLoginAt();
         $user->save();
 
-        if ($user->getRole() === User::TECHNICIAN) {
-            Message::success("Bem-vindo(a), " . $user->getName());
-            redirect("/tecnico/dashboard");
-            return;
-        }
+        $home = $this->resolveHomeByPermission();
 
-        if ($user->getRole() === User::TEACHER) {
-            Message::success("Bem-vindo(a), Professor(a) " . $user->getName());
-            redirect("/professor/dashboard");
-            return;
-        }
-
-        $session->destroy();
-        Message::error("Perfil de acesso não reconhecido.");
-        redirect("/entrar");
+        Message::success("Bem-vindo(a), " . $user->getName() . "!");
+        redirect($home);
     }
 
     public function logout(?array $data): void
@@ -337,5 +319,26 @@ class AuthController extends Controller
 
         Message::success("Senha alterada com sucesso. Faça Login.");
         redirect("/entrar");
+    }
+
+    private function resolveHomeByPermission(): string
+    {
+        if (Auth::hasPermission(Permission::VIEW_USERS)) {
+            return "/admin/dashboard";
+        }
+
+        if (Auth::hasPermission(Permission::VIEW_TECHNICIAN_DASHBOARD)) {
+            return "/tecnico/dashboard";
+        }
+
+        if (Auth::hasPermission(Permission::VIEW_REQUESTER_DASHBOARD)) {
+            return "/professor/dashboard";
+        }
+
+        if (Auth::hasPermission(Permission::VIEW_MANAGER_DASHBOARD)) {
+            return "/gestor/dashboard";
+        }
+
+        return "/entrar";
     }
 }
