@@ -19,6 +19,8 @@ class DashboardController extends Controller
 
     public function index(): void
     {
+        Auth::requirePermission(Permission::VIEW_REQUESTER_DASHBOARD);
+
         $ticketModel = new Ticket();
         $userId = Auth::user()->id;
 
