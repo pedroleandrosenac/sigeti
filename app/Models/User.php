@@ -6,6 +6,7 @@ use App\Core\AbstractModel;
 use App\Models\Department\UserDepartment;
 use App\Models\Role\Role;
 use App\Models\Role\RolePermission;
+use App\Models\Ticket\Ticket;
 
 class User extends AbstractModel
 {
