@@ -7,8 +7,8 @@ final class Permission
     //Chamados
     public const OPEN_TICKET = 'abrir_chamado';
     public const VIEW_MY_TICKET = 'ver_meus_chamados';
-    public const VIEM_ALL_TICKET = 'ver_todos_chamados';
-    public const COMENT_TICKET = 'comentar_chamado';
+    public const VIEW_ALL_TICKET = 'ver_todos_chamados';
+    public const COMMENT_TICKET = 'comentar_chamado';
     public const ATTACH_FILE_TICKET = 'anexar_arquivo_chamado';
     public const CONFIRM_RESOLUTION = 'confirmar_resolucao';
     public const REOPEN_TICKET = 'reabrir_chamado';
@@ -34,7 +34,7 @@ final class Permission
 
     //Dashboard
     public const VIEW_REQUESTER_DASHBOARD = 'ver_dashboard_solicitante';
-    public const VIEW_TECHICIAN_DASHBOARD = 'ver_dashboard_tecnico';
+    public const VIEW_TECHNICIAN_DASHBOARD = 'ver_dashboard_tecnico';
     public const VIEW_MANAGER_DASHBOARD = 'ver_dashboard_gestor';
 
     //Relatório
