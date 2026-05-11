@@ -342,48 +342,44 @@ class Ticket extends AbstractModel
         return $errors;
     }
 
-    public function ticketsOrderedByStatusPriorityAndOpeningDate(): array
+    public function countTicketsByStatus(?int $userId = null, ?int $year = null): array
     {
-        $sql = "SELECT * FROM {$this->table}
-                WHERE deleted_at IS NULL
-                ORDER BY 
-                    FIELD(status, 'aberto', 'em_andamento', 'aguardando', 'resolvido', 'finalizado', 'arquivado'),
-                    FIELD(priority, 'alta', 'media', 'baixa'),
-                    opened_at DESC
-                    ";
+        $year = $year ?? (int)date('Y');
 
-        $statement = $this->connection->prepare($sql);
-        $statement->execute();
+        $sql = "SELECT
+                    status AS status,
+                    COUNT(*) AS total
+                FROM tickets
+                WHERE YEAR(opened_at) = :year";
 
-        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-        $results = [];
-        foreach ($rows as $row) {
-            $results[] = static::hydrate($row);
+        if($userId){
+            $sql .= " AND opened_by = :user_id ";
         }
 
-        return $results;
-    }
-
-    public function ticketsOrderedByStatusPriorityAndOpeningDateByUser(int $userId): array
-    {
-        $sql = "SELECT * FROM {$this->table}
-                WHERE opened_by = :opened_by AND deleted_at IS NULL
-                ORDER BY 
-                    FIELD(status, 'aberto', 'em_andamento', 'aguardando', 'resolvido', 'finalizado', 'arquivado'),
-                    FIELD(priority, 'alta', 'media', 'baixa'),
-                    opened_at DESC
-                    ";
+        $sql .= " GROUP BY status;";
 
         $statement = $this->connection->prepare($sql);
-        $statement->bindParam(":opened_by", $userId, \PDO::PARAM_INT);
+        $statement->bindParam(":year", $year, \PDO::PARAM_INT);
+
+        if($userId){
+            $statement->bindParam(":user_id", $userId, \PDO::PARAM_INT);
+        }
+
         $statement->execute();
 
-        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
-        $results = [];
+        $results = [
+            self::OPEN => 0,
+            self::IN_PROGRESS => 0,
+            self::WAITING => 0,
+            self::RESOLVED => 0,
+            self::FINISHED => 0,
+            self::ARCHIVED => 0
+        ];
+
         foreach ($rows as $row) {
-            $results[] = static::hydrate($row);
+            $results[$row['status']] = $row['total'];
         }
 
         return $results;
@@ -401,7 +397,7 @@ class Ticket extends AbstractModel
             $sql .= " AND opened_by = :user_id ";
         }
 
-        $sql .= "group by month(opened_at) order by month(opened_at);";
+        $sql .= " group by month(opened_at) order by month(opened_at);";
 
         $statement = $this->connection->prepare($sql);
         $statement->bindParam(":year", $year, \PDO::PARAM_INT);
@@ -462,49 +458,6 @@ class Ticket extends AbstractModel
         foreach ($rows as $row) {
             $results["labels"][] = $row['label'];
             $results["totals"][] = $row['total'];
-        }
-
-        return $results;
-    }
-
-    public function countTicketsByStatus(?int $userId = null, ?int $year = null): array
-    {
-        $year = $year ?? (int)date('Y');
-
-        $sql = "SELECT
-                    status AS status,
-                    COUNT(*) AS total
-                FROM tickets
-                WHERE YEAR(opened_at) = :year";
-
-        if($userId){
-            $sql .= " AND opened_by = :user_id ";
-        }
-
-        $sql .= "GROUP BY status;";
-
-        $statement = $this->connection->prepare($sql);
-        $statement->bindParam(":year", $year, \PDO::PARAM_INT);
-
-        if($userId){
-            $statement->bindParam(":user_id", $userId, \PDO::PARAM_INT);
-        }
-
-        $statement->execute();
-
-        $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
-
-        $results = [
-            self::OPEN => 0,
-            self::IN_PROGRESS => 0,
-            self::WAITING => 0,
-            self::RESOLVED => 0,
-            self::FINISHED => 0,
-            self::ARCHIVED => 0
-        ];
-
-        foreach ($rows as $row) {
-            $results[$row['status']] = $row['total'];
         }
 
         return $results;
@@ -580,5 +533,52 @@ class Ticket extends AbstractModel
         }
 
         return $result;
+    }
+
+    public function ticketsOrderedByStatusPriorityAndOpeningDate(): array
+    {
+        $sql = "SELECT * FROM {$this->table}
+                WHERE deleted_at IS NULL
+                ORDER BY 
+                    FIELD(status, 'aberto', 'em_andamento', 'aguardando', 'resolvido', 'finalizado', 'arquivado'),
+                    FIELD(priority, 'alta', 'media', 'baixa'),
+                    opened_at DESC
+                    ";
+
+        $statement = $this->connection->prepare($sql);
+        $statement->execute();
+
+        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $results = [];
+        foreach ($rows as $row) {
+            $results[] = static::hydrate($row);
+        }
+
+        return $results;
+    }
+
+    public function ticketsOrderedByStatusPriorityAndOpeningDateByUser(int $userId): array
+    {
+        $sql = "SELECT * FROM {$this->table}
+                WHERE opened_by = :opened_by AND deleted_at IS NULL
+                ORDER BY 
+                    FIELD(status, 'aberto', 'em_andamento', 'aguardando', 'resolvido', 'finalizado', 'arquivado'),
+                    FIELD(priority, 'alta', 'media', 'baixa'),
+                    opened_at DESC
+                    ";
+
+        $statement = $this->connection->prepare($sql);
+        $statement->bindParam(":opened_by", $userId, \PDO::PARAM_INT);
+        $statement->execute();
+
+        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $results = [];
+        foreach ($rows as $row) {
+            $results[] = static::hydrate($row);
+        }
+
+        return $results;
     }
 }
