@@ -171,4 +171,10 @@ class Department extends AbstractModel
 
         return $errors;
     }
+
+    public function totalDepartments(): ?int
+    {
+        return (new static())
+            ->count();
+    }
 }

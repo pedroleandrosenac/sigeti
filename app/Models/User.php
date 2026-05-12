@@ -367,4 +367,21 @@ class User extends AbstractModel
                 ->where("user_id", "=", $this->getId())
                 ->count() > 0;
     }
+
+    public function totalNumberOfActiveAndRegisteredUsersNotDeleted(): ?int
+    {
+        return (new static())
+            ->where("status", "!=", 'inativo')
+            ->orderBy("created_at", "DESC")
+            ->count();
+    }
+
+    public function recentlyCreatedActiveRegisteredAndNonDeletedUsers(): ?array
+    {
+        return (new static())
+            ->where("status", "!=", 'inativo')
+            ->orderBy("created_at", "DESC")
+            ->limit(5)
+            ->get();
+    }
 }
