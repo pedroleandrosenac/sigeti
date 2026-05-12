@@ -1,7 +1,7 @@
-<?= $this->layout('technician/app', [
-        "title" => $title ?? "Técnico | Nova Categoria - " . APP_NAME,
+<?= $this->layout('admin/app', [
+        "title" => $title ?? "Administrador | Editar Categoria - " . APP_NAME,
         "menuActive" => "categorias",
-        "submenuActive" => "nova",
+        "submenuActive" => "todos",
 ]) ?>
 
 <div id="main">
@@ -14,15 +14,15 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Nova Categoria</h3>
-                    <p class="text-subtitle text-muted">Preencha as informações para criar uma nova categoria</p>
+                    <h3>Editar Categoria</h3>
+                    <p class="text-subtitle text-muted">Altere as informações da categoria</p>
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="<?= url('/tecnico/dashboard') ?>">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="<?= url('/tecnico/categorias') ?>">Categorias</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Nova</li>
+                            <li class="breadcrumb-item active" aria-current="page">Editar</li>
                         </ol>
                     </nav>
                 </div>
@@ -37,15 +37,16 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">
-                                <i class="bi bi-tag-fill me-2"></i>
-                                Informações da Categoria
+                                <i class="bi bi-pencil-fill me-2"></i>
+                                Editar Categoria
                             </h4>
                         </div>
                         <div class="card-body">
-
-                            <form action="<?= url('/tecnico/categorias/cadastrar') ?>" method="post">
+                            <form action="<?= url('/tecnico/categorias/editar/' . $category->getId()) ?>" method="post">
 
                                 <?= csrf_input() ?>
+
+                                <input type="hidden" name="_method" value="PUT">
 
                                 <!-- Nome -->
                                 <div class="form-group">
@@ -57,7 +58,7 @@
                                         <input type="text" name="name" id="name"
                                                class="form-control"
                                                placeholder="Nome da categoria"
-                                               value="<?= old('name') ?>"
+                                               value="<?= old('name', htmlspecialchars($category->getName())) ?>"
                                                required>
                                     </div>
                                 </div>
@@ -72,7 +73,8 @@
                                         <textarea name="description" id="description"
                                                   class="form-control"
                                                   placeholder="Descreva a categoria"
-                                                  rows="4"><?= old('description') ?></textarea>
+                                                  rows="4"
+                                                  required><?= old('description', htmlspecialchars($category->getDescription())) ?></textarea>
                                     </div>
                                 </div>
 
@@ -80,10 +82,13 @@
                                 <div class="form-group mt-4 d-flex gap-2">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="bi bi-check-circle-fill me-1"></i>
-                                        Salvar Categoria
+                                        Atualizar
                                     </button>
+                                    <a href="<?= url('/tecnico/categorias') ?>" class="btn btn-secondary">
+                                        <i class="bi bi-arrow-left-circle-fill me-1"></i>
+                                        Cancelar
+                                    </a>
                                 </div>
-
                             </form>
                         </div>
                     </div>

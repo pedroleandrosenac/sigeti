@@ -1,5 +1,5 @@
-<?= $this->layout('technician/app', [
-        'title' => $title ?? "Técnico | Categorias - " . APP_NAME,
+<?= $this->layout('admin/app', [
+        'title' => $title ?? "Administrador | Categorias - " . APP_NAME,
         'menuActive' => 'categorias',
         'submenuActive' => 'todos',
 ]) ?>
