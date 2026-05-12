@@ -5,9 +5,9 @@ namespace App\Controllers\Teacher;
 use App\Core\Auth;
 use App\Core\Controller;
 use App\Core\Message;
+use App\Core\Permission;
 use App\Models\Ticket\Ticket;
 use App\Models\Ticket\TicketComment;
-use App\Models\User;
 
 class TicketCommentController extends Controller
 {
@@ -15,11 +15,13 @@ class TicketCommentController extends Controller
     {
         parent::__construct("App");
 
-        Auth::requireRole(User::TEACHER);
+        Auth::requirePermission(Permission::COMMENT_TICKET);
     }
 
     public function index(?array $data): void
     {
+        Auth::requirePermission(Permission::COMMENT_TICKET);
+
         $ticket = Ticket::find((int)$data['ticket_id']);
 
         if(!$ticket || $ticket->getOpenedBy() !== Auth::user()->id){
@@ -40,6 +42,8 @@ class TicketCommentController extends Controller
 
     public function store(?array $data): void
     {
+        Auth::requirePermission(Permission::COMMENT_TICKET);
+
         $ticketId = (int)($data["ticket_id"] ?? 0);
 
         $this->validateCsrfToken($data, "/professor/chamados/{$ticketId}/comentarios");

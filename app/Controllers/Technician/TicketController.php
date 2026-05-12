@@ -190,6 +190,8 @@ class TicketController extends Controller
 
     public function destroy(?array $data): void
     {
+        Auth::requirePermission(Permission::DELETE_TICKET);
+
         $this->validateCsrfToken($data, "/tecnico/chamados");
 
         $ticket = Ticket::find((int)$data["id"]);
