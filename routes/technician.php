@@ -3,21 +3,6 @@
 $router->group("/tecnico");
 $router->get("/dashboard", "Technician\\DashboardController@index");
 
-/** Rotas de Escolas */
-$router->get("/escolas", "Technician\\SchoolController@index");
-$router->get("/escolas/cadastrar", "Technician\\SchoolController@create");
-$router->post("/escolas/cadastrar", "Technician\\SchoolController@store");
-$router->get("/escolas/editar/{id}", "Technician\\SchoolController@edit");
-$router->put("/escolas/editar/{id}", "Technician\\SchoolController@update");
-$router->delete("/escolas/excluir/{id}", "Technician\\SchoolController@destroy");
-
-/** Rotas de Usuários */
-$router->get("/usuarios", "Technician\\UserController@index");
-$router->get("/usuarios/cadastrar", "Technician\\UserController@create");
-$router->post("/usuarios/cadastrar", "Technician\\UserController@store");
-$router->get("/usuarios/editar/{id}", "Technician\\UserController@edit");
-$router->put("/usuarios/editar/{id}", "Technician\\UserController@update");
-$router->delete("/usuarios/excluir/{id}", "Technician\\UserController@destroy");
 
 /** Rotas de Chamados */
 $router->get("/chamados", "Technician\\TicketController@index");
