@@ -15,8 +15,8 @@ $router->delete("/categorias/excluir/{id}", "Admin\\CategoryController@destroy")
 
 
 //Rotas dos Departamentos
-$router->get("/departamentos", "Admin\\DepartamentController@index");
-$router->get("/departamentos/cadastrar", "Admin\\DepartamentController@create");
-$router->post("/departamentos/cadastrar", "Admin\\DepartamentController@store");
-$router->get("/departamentos/editar/{id}", "Admin\\DepartamentController@edit");
-$router->put("/departamentos/editar/{id}", "Admin\\DepartamentController@update");
+$router->get("/departamentos", "Admin\\DepartmentController@index");
+$router->get("/departamentos/cadastrar", "Admin\\DepartmentController@create");
+$router->post("/departamentos/cadastrar", "Admin\\DepartmentController@store");
+$router->get("/departamentos/editar/{id}", "Admin\\DepartmentController@edit");
+$router->put("/departamentos/editar/{id}", "Admin\\DepartmentController@update");
