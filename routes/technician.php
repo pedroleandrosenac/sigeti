@@ -33,9 +33,3 @@ $router->post("/chamados/{id}/comentarios", "Technician\\TicketCommentController
 $router->put("/chamados/{id}/comentarios/editar/{id}", "Technician\\TicketCommentController@update");
 $router->delete("/chamados/{ticket}/comentarios/excluir/{id}", "Technician\\TicketCommentController@destroy");
 
-/** Rotas de Perfil */
-$router->get("/perfil", "Technician\\ProfileController@index");
-$router->post("/perfil", "Technician\\ProfileController@update");
-
-$router->get("/seguranca", "Technician\\ProfileController@security");
-$router->post("/seguranca", "Technician\\ProfileController@updatePassword");
