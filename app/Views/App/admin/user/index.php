@@ -1,5 +1,5 @@
-<?= $this->layout('technician/app', [
-        'title' => $title ?? "Técnico | Usuários - " . APP_NAME,
+<?= $this->layout('admin/app', [
+        'title' => $title ?? "Admin | Usuários - " . APP_NAME,
         'menuActive' => 'usuarios',
         'submenuActive' => 'todos',
 ]) ?>
@@ -20,7 +20,7 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="<?= url('/tecnico/dashboard') ?>">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="<?= url('/admin/dashboard') ?>">Dashboard</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Usuários</li>
                         </ol>
                     </nav>
@@ -38,7 +38,7 @@
                             <i class="bi bi-people-fill me-2"></i>
                             Todos os Usuários
                         </h5>
-                        <a href="<?= url('/tecnico/usuarios/cadastrar') ?>" class="btn btn-primary btn-sm">
+                        <a href="<?= url('/admin/usuarios/cadastrar') ?>" class="btn btn-primary btn-sm">
                             <i class="bi bi-person-plus-fill me-1"></i>
                             Novo Usuário
                         </a>
@@ -117,7 +117,7 @@
                                                 </small>
                                             </td>
                                             <td>
-                                                <a href="<?= url('/tecnico/usuarios/editar/' . $user->getId()) ?>"
+                                                <a href="<?= url('/admin/usuarios/editar/' . $user->getId()) ?>"
                                                    class="btn btn-sm btn-warning">
                                                     <i class="bi bi-pencil-fill"></i>
                                                     <span class="d-none d-xl-inline ms-1">Editar</span>
@@ -158,7 +158,7 @@
                                                                         data-bs-dismiss="modal">
                                                                     <span class="d-none d-sm-block">Cancelar</span>
                                                                 </button>
-                                                                <form action="<?= url('/tecnico/usuarios/excluir/' . $user->getId()) ?>"
+                                                                <form action="<?= url('/admin/usuarios/excluir/' . $user->getId()) ?>"
                                                                       method="POST" class="d-inline">
                                                                     <?= csrf_input() ?>
                                                                     <input type="hidden" name="_method" value="DELETE">
@@ -178,7 +178,7 @@
                                         <td colspan="8" class="text-center text-muted fst-italic py-4">
                                             <i class="bi bi-inbox-fill me-2"></i>
                                             Nenhum usuário cadastrado ainda.
-                                            <a href="<?= url('/tecnico/usuarios/cadastrar') ?>">Cadastrar o primeiro</a>
+                                            <a href="<?= url('/admin/usuarios/cadastrar') ?>">Cadastrar o primeiro</a>
                                         </td>
                                     </tr>
                                 <?php endif; ?>

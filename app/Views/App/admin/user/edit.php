@@ -1,5 +1,5 @@
-<?= $this->layout('technician/app', [
-        "title" => $title ?? "Técnico | Editar Usuário - " . APP_NAME,
+<?= $this->layout('admin/app', [
+        "title" => $title ?? "Admin | Editar Usuário - " . APP_NAME,
         "menuActive" => "usuarios",
         "submenuActive" => "todos",
 ]) ?>
@@ -21,8 +21,8 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="<?= url('/tecnico/dashboard') ?>">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="<?= url('/tecnico/usuarios') ?>">Usuários</a></li>
+                            <li class="breadcrumb-item"><a href="<?= url('/admin/dashboard') ?>">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="<?= url('/admin/usuarios') ?>">Usuários</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Editar</li>
                         </ol>
                     </nav>
@@ -43,7 +43,7 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <form action="<?= url('/tecnico/usuarios/editar/' . $user->getId()) ?>" method="post">
+                            <form action="<?= url('/admin/usuarios/editar/' . $user->getId()) ?>" method="post">
                                 <?= csrf_input() ?>
                                 <input type="hidden" name="_method" value="PUT">
                                 <input type="hidden" name="id" value="<?= $user->getId() ?>">
@@ -244,7 +244,7 @@
                                         <i class="bi bi-check-circle-fill me-1"></i>
                                         Atualizar
                                     </button>
-                                    <a href="<?= url('/tecnico/usuarios') ?>" class="btn btn-secondary">
+                                    <a href="<?= url('/admin/usuarios') ?>" class="btn btn-secondary">
                                         <i class="bi bi-arrow-left-circle-fill me-1"></i>
                                         Cancelar
                                     </a>
