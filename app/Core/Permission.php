@@ -36,6 +36,7 @@ final class Permission
     public const VIEW_REQUESTER_DASHBOARD = 'ver_dashboard_solicitante';
     public const VIEW_TECHNICIAN_DASHBOARD = 'ver_dashboard_tecnico';
     public const VIEW_MANAGER_DASHBOARD = 'ver_dashboard_gestor';
+    public const VIEW_ADMIN_DASHBOARD = 'ver_dashboard_admin';
 
     //Relatório
     public const VIEW_REPORTS = 'ver_relatorios';
