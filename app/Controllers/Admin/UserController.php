@@ -95,4 +95,31 @@ class UserController extends Controller
         redirect("/admin/usuarios/editar/" . $newUser->getId());
 
     }
+
+    public function edit(?array $data): void
+    {
+        Auth::requirePermission(Permission::EDIT_USER);
+
+        $userId = $data['id'];
+
+        $user = User::find($userId);
+
+        if(!$user){
+            Message::warning("Usuário não encontrado ou não existe.");
+            redirect("/admin/usuarios");
+            return;
+        }
+
+        $roles = Role::all();
+        $user = User::all();
+
+        echo $this->view->render("admin/user/edit", [
+            "user" => $user,
+           "roles" => $roles,
+        ]);
+
+        clear_old();
+    }
+
+
     }
