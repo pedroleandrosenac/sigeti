@@ -12,9 +12,3 @@ $router->post("/chamados/cadastrar", "Teacher\\TicketController@store");
 $router->get("/chamados/{id}/comentarios", "Teacher\\TicketCommentController@index");
 $router->post("/chamados/{id}/comentarios", "Teacher\\TicketCommentController@store");
 
-/** Rotas de Perfil */
-$router->get("/perfil", "Teacher\\ProfileController@index");
-$router->post("/perfil", "Teacher\\ProfileController@update");
-
-$router->get("/seguranca", "Teacher\\ProfileController@security");
-$router->post("/seguranca", "Teacher\\ProfileController@updatePassword");
