@@ -86,4 +86,24 @@ class DepartmentController extends Controller
         redirect("/admin/departamentos/editar");
     }
 
+    public function edit(?array $data): void
+    {
+        Auth::requirePermission(Permission::EDIT_DEPARTMENT);
+
+        $department = Department::find($data["id"]);
+
+        if (!$department){
+            Message::warning("Departamento não cadastrada ou não existe.");
+            redirect("/admin/departamentos");
+            return;
+        }
+
+        echo $this->view->render("admin/department/edit", [
+            "department" => $department
+        ]);
+
+        clear_old();
+    }
+
+
 }
