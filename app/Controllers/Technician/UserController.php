@@ -144,6 +144,7 @@ class UserController extends Controller
 
         $user = User::find((int) $userId);
 
+
         try {
             $user->fill([
                 "name" => $data["name"],
