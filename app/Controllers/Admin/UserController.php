@@ -121,5 +121,64 @@ class UserController extends Controller
         clear_old();
     }
 
+    public function update(?array $data): void
+    {
+        Auth::requirePermission(Permission::EDIT_USER);
+
+        $userId = $data['id'];
+
+        $this->validateCsrfToken($data, "/admin/usuarios/editar/" . $userId);
+
+        $user = User::find((int) $userId);
+
+
+        if(!$user){
+            Message::warning("Usuario não encontrado.");
+            redirect("/admin/usuarios");
+            return;
+        }
+
+
+        try {
+            $user->fill([
+                "name" => $data["name"],
+                "email" => $data["email"],
+                "role_id" => $data["role_id"],
+                "status" => $data["status"]
+            ]);
+
+
+            if(!empty($data['password'])){
+                $user->setPassword($data['password']);
+            }
+
+            $errors = array_merge(
+                $user->validate($data),
+                $user->validateBusinessRule($user->getId())
+            );
+
+            if ($errors) {
+
+                flash_old($data);
+
+                foreach ($errors as $error) {
+                    Message::warning($error);
+                }
+
+                redirect("/admin/usuarios/editar/" . $user->getId());
+            }
+
+            $user->save();
+
+
+        } catch (\InvalidArgumentException $invalidArgumentException) {
+            Message::error($invalidArgumentException->getMessage());
+            redirect("/admin/usuarios/editar/" . $user->getId());
+            return;
+        }
+
+        Message::success("Usuário atualizado com sucesso!");
+        redirect("/admin/usuarios/editar/" . $user->getId());
+    }
 
     }
