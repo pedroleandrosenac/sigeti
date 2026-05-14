@@ -16,12 +16,12 @@ class DashboardController extends Controller
     {
         parent::__construct("App");
 
-        Auth::requirePermission(Permission::VIEW_MANAGER_DASHBOARD);
+        Auth::requirePermission(Permission::VIEW_ADMIN_DASHBOARD);
     }
 
     public function index(): void
     {
-        Auth::requirePermission(Permission::VIEW_MANAGER_DASHBOARD);
+        Auth::requirePermission(Permission::VIEW_ADMIN_DASHBOARD);
 
         $totalUsers = (new User())->totalNumberOfActiveAndRegisteredUsersNotDeleted();
         $totalRoles = (new Role())->totalRoles();
