@@ -105,5 +105,47 @@ class DepartmentController extends Controller
         clear_old();
     }
 
+    public function update(?array $data): void
+    {
+        Auth::requirePermission(Permission::EDIT_DEPARTMENT);
 
+        $this->validateCsrfToken($data, "/admin/departamentos/editar");
+
+        $department = Department::find($data["id"]);
+        if (!$department){
+            Message::warning("Departamento não cadastrada ou não existe.");
+            redirect("/admin/departamentos");
+            return;
+        }
+
+        try {
+            $department->fill([
+                "name" => $data["name"],
+                "code" => $data["code"],
+                "description" => $data["description"],
+                "address" => $data["address"],
+            ]);
+            $errors = array_merge(
+                $department->validate($data),
+                $department->validateBusinessRule($department->getId())
+            );
+            if ($errors){
+                flash_old($data);
+                foreach ($errors as $error){
+                    Message::warning($error);
+                }
+                redirect("/admin/departamentos/editar");
+                return;
+            }
+
+            $department->save();
+        }catch (\InvalidArgumentException $invalidArgumentException){
+            Message::error($invalidArgumentException->getMessage());
+            redirect("/admin/departamentos/editar");
+            return;
+        }
+
+        Message::success("Departamento editado com sucesso!");
+        redirect("/admin/departamentos/editar");
+    }
 }
