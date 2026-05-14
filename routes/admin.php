@@ -12,3 +12,11 @@ $router->post("/categorias/cadastrar", "Admin\\CategoryController@store");
 $router->get("/categorias/editar/{id}", "Admin\\CategoryController@edit");
 $router->put("/categorias/editar/{id}", "Admin\\CategoryController@update");
 $router->delete("/categorias/excluir/{id}", "Admin\\CategoryController@destroy");
+
+
+//Rotas dos Departamentos
+$router->get("/departamentos", "Admin\\DepartamentController@index");
+$router->get("/departamentos/cadastrar", "Admin\\DepartamentController@create");
+$router->post("/departamentos/cadastrar", "Admin\\DepartamentController@store");
+$router->get("/departamentos/editar/{id}", "Admin\\DepartamentController@edit");
+$router->put("/departamentos/editar/{id}", "Admin\\DepartamentController@update");
