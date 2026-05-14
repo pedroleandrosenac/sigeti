@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use App\Core\Auth;
 use App\Core\Controller;
 use App\Core\Permission;
+use App\Models\Role\Role;
 use App\Models\User;
 
 class UserController extends Controller
@@ -31,4 +32,18 @@ class UserController extends Controller
         clear_old();
     }
 
-}
+    public function create(): void
+    {
+        Auth::requirePermission(Permission::CREATE_USER);
+
+        $roles = Role::all();
+
+        echo $this->view->render("admin/user/create", [
+            "roles" => $roles
+        ]);
+
+        clear_old();
+
+    }
+
+    }
