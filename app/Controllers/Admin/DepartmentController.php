@@ -35,4 +35,17 @@ class DepartmentController extends Controller
         clear_old();
     }
 
+    public function create(): void
+    {
+        Auth::requirePermission(Permission::CREATE_DEPARTMENT);
+        
+        echo $this->view->render("admin/department/create");
+        
+        clear_old();
+    }
+
+    public function ()
+    {
+        
+    }
 }
