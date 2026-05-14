@@ -1,5 +1,5 @@
 <?php
-
+$router->group(null);
 $router->get('/perfil', 'ProfileController@index');
 $router->post('/perfil', 'ProfileController@update');
 
