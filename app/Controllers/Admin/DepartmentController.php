@@ -83,7 +83,7 @@ class DepartmentController extends Controller
         }
 
         Message::success("Departamento cadastrado com sucesso!");
-        redirect("/admin/departamentos/editar");
+        redirect("/admin/departamentos");
     }
 
     public function edit(?array $data): void
@@ -134,18 +134,18 @@ class DepartmentController extends Controller
                 foreach ($errors as $error){
                     Message::warning($error);
                 }
-                redirect("/admin/departamentos/editar");
+                redirect("/admin/departamentos/editar" . $department->getId());
                 return;
             }
 
             $department->save();
         }catch (\InvalidArgumentException $invalidArgumentException){
             Message::error($invalidArgumentException->getMessage());
-            redirect("/admin/departamentos/editar");
+            redirect("/admin/departamentos/editar" . $department->getId());
             return;
         }
 
         Message::success("Departamento editado com sucesso!");
-        redirect("/admin/departamentos/editar");
+        redirect("/admin/departamentos" . $department->getId());
     }
 }
