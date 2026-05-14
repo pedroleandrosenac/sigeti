@@ -46,6 +46,7 @@ class UserController extends Controller
         clear_old();
 
     }
+
     public function store(?array $data): void
     {
         Auth::requirePermission(Permission::CREATE_USER);
@@ -84,7 +85,6 @@ class UserController extends Controller
             $newUser->save();
 
 
-
         } catch (\InvalidArgumentException $invalidArgumentException) {
             Message::error($invalidArgumentException->getMessage());
             redirect("/admin/usuarios/cadastrar");
@@ -104,18 +104,16 @@ class UserController extends Controller
 
         $user = User::find($userId);
 
-        if(!$user){
+        if (!$user) {
             Message::warning("Usuário não encontrado ou não existe.");
             redirect("/admin/usuarios");
             return;
         }
 
         $roles = Role::all();
-        $user = User::all();
-
         echo $this->view->render("admin/user/edit", [
             "user" => $user,
-           "roles" => $roles,
+            "roles" => $roles,
         ]);
 
         clear_old();
@@ -129,10 +127,10 @@ class UserController extends Controller
 
         $this->validateCsrfToken($data, "/admin/usuarios/editar/" . $userId);
 
-        $user = User::find((int) $userId);
+        $user = User::find((int)$userId);
 
 
-        if(!$user){
+        if (!$user) {
             Message::warning("Usuario não encontrado.");
             redirect("/admin/usuarios");
             return;
@@ -147,8 +145,11 @@ class UserController extends Controller
                 "status" => $data["status"]
             ]);
 
+            if (!empty($data['document'])) {
+                $user->setDocument($data['document']);
+            }
 
-            if(!empty($data['password'])){
+            if (!empty($data['password'])) {
                 $user->setPassword($data['password']);
             }
 
@@ -181,4 +182,4 @@ class UserController extends Controller
         redirect("/admin/usuarios/editar/" . $user->getId());
     }
 
-    }
+}

@@ -63,7 +63,7 @@ class UserController extends Controller
                 "name" => $data["name"],
                 "email" => $data["email"],
                 "password" => $data["password"],
-                "document"=> $data["document"] ?? null,
+                "document" => $data["document"] ?? null,
                 "role" => $data["role"],
                 "status" => $data["status"]
             ]);
@@ -73,7 +73,7 @@ class UserController extends Controller
                 $newUser->validateBusinessRule()
             );
 
-            if($data['role'] === User::TEACHER){
+            if ($data['role'] === User::TEACHER) {
                 $linkErrors = SchoolUser::validateSchoolUserLinks($data['schools']);
                 $errors = array_merge($errors, $linkErrors);
             }
@@ -91,7 +91,7 @@ class UserController extends Controller
 
             $newUser->save();
 
-            if($newUser->getRole() === User::TEACHER){
+            if ($newUser->getRole() === User::TEACHER) {
 
                 $this->synchronizeSchoolUser($newUser->getId(), $data['schools']);
 
@@ -116,7 +116,7 @@ class UserController extends Controller
 
         $user = User::find($userId);
 
-        if(!$user){
+        if (!$user) {
             Message::warning("Usuário não encontrado ou não existe.");
             redirect("/tecnico/usuarios");
             return;
@@ -142,7 +142,7 @@ class UserController extends Controller
 
         $this->validateCsrfToken($data, "/tecnico/usuarios/editar/" . $userId);
 
-        $user = User::find((int) $userId);
+        $user = User::find((int)$userId);
 
 
         try {
@@ -153,11 +153,11 @@ class UserController extends Controller
                 "status" => $data["status"]
             ]);
 
-            if(!empty($data['document'])){
+            if (!empty($data['document'])) {
                 $user->setDocument($data['document']);
             }
 
-            if(!empty($data['password'])){
+            if (!empty($data['password'])) {
                 $user->setPassword($data['password']);
             }
 
@@ -166,7 +166,7 @@ class UserController extends Controller
                 $user->validateBusinessRule($user->getId())
             );
 
-            if($data['role'] === User::TEACHER){
+            if ($data['role'] === User::TEACHER) {
                 $linkErrors = SchoolUser::validateSchoolUserLinks($data['schools']);
                 $errors = array_merge($errors, $linkErrors);
             }
@@ -186,7 +186,7 @@ class UserController extends Controller
 
             $this->removeSchoolUserLinks($user->getId());
 
-            if($user->getRole() === User::TEACHER){
+            if ($user->getRole() === User::TEACHER) {
                 $this->synchronizeSchoolUser($user->getId(), $data['schools']);
             }
 
@@ -242,7 +242,7 @@ class UserController extends Controller
     {
         $validSchools = SchoolUser::validateSchools($links);
 
-        foreach($validSchools as $school){
+        foreach ($validSchools as $school) {
 
             $schoolId = $school['school_id'];
             $shift = $school['shift'];
@@ -258,7 +258,7 @@ class UserController extends Controller
 
                 $newSchoolUser->save();
 
-            }catch (\InvalidArgumentException $invalidArgumentException) {
+            } catch (\InvalidArgumentException $invalidArgumentException) {
                 throw new \InvalidArgumentException($invalidArgumentException->getMessage());
             }
         }
@@ -268,10 +268,10 @@ class UserController extends Controller
     {
         $links = SchoolUser::linksByUser($userId);
 
-        if(!empty($links)){
+        if (!empty($links)) {
 
             /** @var SchoolUser $link */
-            foreach ($links as $link){
+            foreach ($links as $link) {
                 $link->delete();
             }
         }
